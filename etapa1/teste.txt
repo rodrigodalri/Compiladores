@@ -1,0 +1,64 @@
+/* 
+	ETAPA 1 - TRABALHO DE COMPILADORES
+	Gabriel Zillmer e Rodrigo dal Ri 
+*/
+
+gabriel zillmer
+rodrigo dal ri
+
+12
+11.33
+
+/* comentario
+duas linhas*/
+
+//comentario uma linha
+
+
+"testando aspas \" dentro de estring"
+
+"Testando quebra de linha
+na string"
+
+'a'
+
+byte    
+short 
+long
+float 
+double
+if
+then   
+else 
+while 
+for
+read  
+print   
+return
+<=
+>=
+==
+!=
+&&
+||
+, 
+;
+:
+(
+)
+[
+]
+{
+} 
++
+-
+*
+/
+<
+>
+=
+!
+&
+$
+#
+@
