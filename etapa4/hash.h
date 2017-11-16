@@ -27,6 +27,7 @@ typedef struct hash_struct
 {
 	int type;
 	int datatype;
+	int numparam;
 	char* text;
 	struct hash_struct *next; 
 }Hash_Node;

@@ -19,6 +19,7 @@ int greaterDatatype(int a, int b);
 void checkFunCall(ASTREE* node);
 void setFunParam(ASTREE* node);
 void checkReturnFun(ASTREE* node, ASTREE* nodefunc);
+void semanticSetRemnant(ASTREE* node);
 
 
 
