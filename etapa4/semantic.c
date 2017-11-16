@@ -22,6 +22,31 @@ void checkSemantic(ASTREE* node)
 	CheckOperands(n);
 }
 
+//verifica tipo do retorno
+void checkReturnFun(ASTREE* node, ASTREE* nodefunc)
+{
+
+}
+
+//seta numeoro e tipo de parametros da funcao
+void setFunParam(ASTREE* node)
+{
+
+}
+
+//verificar numero e tipo de parametros declarados e usados 
+void checkFunCall(ASTREE* node)
+{
+
+}
+
+int greaterDatatype(int a, int b){
+	
+	if(a > b) 
+		return a;
+	else 
+		return b;
+}
 
 void CheckUndeclared(void)
 {
