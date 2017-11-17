@@ -24,7 +24,7 @@ d: byte=65;
   read > i;
   while (i<1)
     {
-    //a = incn(a,1);
+    a = incn(a,1);
     i = i + 1
   
     };
@@ -37,7 +37,7 @@ print "Digite um numero: \n";
   read > i;
   while (i<10)
     {
-   // a = incn(a,1);
+    a = incn(a,1);
     i = i + 1
     };  
 if (a==11) then {} else
@@ -49,8 +49,8 @@ if (a==11) then {} else
 
 
 
-//(long) incn (x: long, n: long)
- // {return (x+n)}
+(long) incn (x: long, n: long)
+  {return (x+n)}
 
 (short) voidfunc() {}
 
