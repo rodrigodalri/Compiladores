@@ -153,6 +153,7 @@ void setTypes(ASTREE* node)
 void checkUsage(ASTREE *node)
 {
 	int i;
+	
 	if(!node) return;
 	
 	switch(node->type){
@@ -167,6 +168,8 @@ void checkUsage(ASTREE *node)
 				fprintf(stderr, "ERRO: identificador %s deve ser funcao.\n", node->symbol->text);
 				exit(4);
 			}
+			break;
+		case ASTREE_FUNDEF: checkReturn(node, node->son[2]);
 			break;
 		case ASTREE_ARRAY_WRITE: if(node->symbol->type != SYMBOL_ARR)
 			{
@@ -210,6 +213,14 @@ void checkUsage(ASTREE *node)
         			}}
     			} 
 			break;
+		case ASTREE_PRINT:
+			if(node->son[0]->symbol != NULL) {
+			if(node->son[0]->symbol->type != SYMBOL_LIT_STRING)
+			{
+				fprintf(stderr, "ERRO: deve ser string.\n");
+				exit(4);
+			}}
+			break;
 		case ASTREE_SYMBOL: if(node->symbol->type != SYMBOL_VAR && node->symbol->type != SYMBOL_LIT_INT && node->symbol->type != SYMBOL_LIT_REAL && node->symbol->type != SYMBOL_LIT_CHAR && node->symbol->type != SYMBOL_LIT_STRING)
 			{
 				fprintf(stderr, "ERRO: identificador %s deve ser escalar.\n", node->symbol->text);
@@ -223,23 +234,63 @@ void checkUsage(ASTREE *node)
 		checkUsage(node->son[i]);
 }
 
+void checkReturn(ASTREE *nodefunc, ASTREE *node)
+{	
+	int i = 0;
+	int data;
+	
+	if(!node) return;
+	
+	for(i = 0; i < MAX_SONS; i++) 
+		checkReturn(nodefunc, node->son[i]);
+	
+	if(node->type == ASTREE_RETURN){ 
+		if(node->son[0] != NULL) 
+			
+			if(node->son[0]->type == ASTREE_PARENTHESIS)
+			{	
+				if(node->son[0]->son[0]->type == ASTREE_ADD || node->son[0]->son[0]->type == ASTREE_SUB || node->son[0]->son[0]->type == ASTREE_MUL || node->son[0]->son[0]->type == ASTREE_DIV ){
+			
+				data = greaterDatatype(node->son[0]->son[0]->son[0]->symbol->datatype, node->son[0]->son[0]->son[1]->symbol->datatype);
+				}
+				else 
+				{
+					data = node->son[0]->son[0]->symbol->datatype; 
+				}			
+			}
 
+			if(nodefunc->symbol != NULL)
+			{
+				if (data != nodefunc->symbol->datatype)
+				{
+					fprintf(stderr, "ERRO: tipo retorno invalido.\n");	
+					exit(4);
+				}
+			}
+	}
+}
+
+int greaterDatatype(int a, int b)
+{
+	if(a > b) return a;
+	else return b;
+}
 
 int countNumParam(ASTREE *node)
 {
-	if(!node)
-		return 0;
+	if(!node) return 0;
 	else{
 		return 1 + countNumParam(node->son[1]);
 	}
+
+	return 0;
 }
 
 int checkNumParam(ASTREE* node)
 {
-	if(!node)
-		return 0;
+	if(!node) return 0;
 
-
+	return 0;
 }
 
 int checkTypeParam(ASTREE* node)
@@ -247,10 +298,7 @@ int checkTypeParam(ASTREE* node)
 	if(!node)
 		return 0;
 
-
+	return 0;
 	
 }
-
-
-
 
