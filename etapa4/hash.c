@@ -61,18 +61,21 @@ Hash_Node* hashFind(char* text)
 
 Hash_Node *hashInsert(int type, char *text)
 {
-  Hash_Node *newnode;
-  int address;
-  if((newnode = hashFind(text)) != NULL)
-	return newnode; 
-  address = hashAddress(text);
-  newnode = (Hash_Node*) calloc(1, sizeof(Hash_Node));
-  newnode->type = type;
-  newnode->text = calloc(strlen(text)+1, sizeof(char));
-  strcpy(newnode->text, text);
-  newnode->next = Table[address];
-  Table[address] = newnode;
-  return newnode;
+	Hash_Node *newnode;
+	int address;
+	
+	if((newnode = hashFind(text)) != NULL)
+		return newnode; 
+	
+	address = hashAddress(text);
+	newnode = (Hash_Node*) calloc(1, sizeof(Hash_Node));
+	newnode->type = type;
+	newnode->text = calloc(strlen(text)+1, sizeof(char));
+	strcpy(newnode->text, text);
+	newnode->next = Table[address];
+	Table[address] = newnode;
+	
+	return newnode;
 }
 
 

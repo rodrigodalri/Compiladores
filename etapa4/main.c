@@ -182,8 +182,9 @@ void uncompile(ASTREE *ast){
 
 
 int main(int argc, char *argv[]){
-    int fecha;
-	
+    
+	int fecha;
+			
 	if(argc<3){
 		fprintf(stderr,"Execute: ./etapa4 nomearquivo.lang nomearquivo2.lang\n");
 		return 1;
@@ -212,6 +213,7 @@ int main(int argc, char *argv[]){
 		fprintf(stderr,"Erro ao fechar o arquivo %s.\n",argv[2]);
 
 	hashPrint();
-     
+    	
+
     return 0; 
 }

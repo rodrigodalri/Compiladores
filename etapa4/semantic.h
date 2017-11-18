@@ -15,7 +15,9 @@ void checkUndeclared(void);
 void checkUsage(ASTREE* node);
 void checkOperands(ASTREE* node);
 
-
+int countNumParam(ASTREE* node);
+int checkNumParam(ASTREE* node);
+int checkTypeParam(ASTREE* node);
 
 
 
