@@ -171,7 +171,8 @@ void checkUsage(ASTREE *node)
 				fprintf(stderr, "ERRO: identificador %s deve ser funcao.\n", node->symbol->text);
 				semanticError++;
 			}
-			checkParam(node);
+			checkNumParam(node);
+			checkTypeParam(node);
 			break;
 		case ASTREE_FUNDEF: checkReturn(node, node->son[2]);
 			break;
@@ -286,7 +287,7 @@ int greaterDatatype(int a, int b)
 	else return b;
 }
 
-int checkParam(ASTREE* node)
+void checkNumParam(ASTREE* node)
 {
 	int numParam = 0;
 	int correct = node->symbol->numparam;
@@ -298,11 +299,6 @@ int checkParam(ASTREE* node)
 		fprintf(stderr, "ERRO: Numero de parametros incorretos\n");
 		semanticError++;
 	}	
-	else{
-		if(node->son[0]){
-			checkTypeParam(node->son[0]);
-		}
-	}
 }
 
 int countNumParam(ASTREE *node)
@@ -315,13 +311,22 @@ int countNumParam(ASTREE *node)
 	return 0;
 }
 
-//AQUI AINDA TEM TRABALHO
-int checkTypeParam(ASTREE* node)
+//TERMINAR DE IMPLEMENTAR
+void checkTypeParam(ASTREE* node) 
 {
-	if(!node) return 0;
+
+	if(!node) return;
 	
-	checkTypeParam(node->son[1]);
-	
+		if (node->type != ASTREE_SYMBOL)
+		{
+			node = node->son[0];
+			checkTypeParam(node->son[0]);
+		}	
+		else
+		{
+			fprintf(stderr, "\n %d \n", node->symbol->datatype);
+			
+		}
 }
 
 

@@ -15,9 +15,9 @@ void checkUndeclared(void);
 void checkUsage(ASTREE* node);
 void checkOperands(ASTREE* node);
 
-int checkParam(ASTREE* node);
+void checkNumParam(ASTREE* node);
 int countNumParam(ASTREE* node);
-int checkTypeParam(ASTREE* node);
+void checkTypeParam(ASTREE* node);
 void checkReturn(ASTREE *nodefunc, ASTREE *node);
 void semanticSetRemnant(ASTREE* node);
 int greaterDatatype(int a, int b);
