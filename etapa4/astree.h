@@ -69,11 +69,15 @@ typedef struct astree{
 	int type;
 	Hash_Node *symbol;
 	struct astree* son[MAX_SONS];
+	struct astree* start;
 }ASTREE;
 
 ASTREE* astreeCreate(int type, Hash_Node* symbol, ASTREE* son0, ASTREE* son1, ASTREE* son2, ASTREE* son3);
 
 void astreePrint(int level, ASTREE *node);
+
+void linkStart(ASTREE *node, ASTREE *root);
+ASTREE *search(ASTREE *node, char *name);
 
 
 #endif

@@ -17,6 +17,7 @@ int checkSemantic(ASTREE* node)
 
 	setTypes(node); 
 	checkUndeclared();
+	linkStart(node, node);
 	checkUsage(node);
 	checkOperands(node);
 
@@ -172,7 +173,7 @@ void checkUsage(ASTREE *node)
 				semanticError++;
 			}
 			checkNumParam(node);
-			checkTypeParam(node);
+			checkTypeParam(node, node->start); 
 			break;
 		case ASTREE_FUNDEF: checkReturn(node, node->son[2]);
 			break;
@@ -287,6 +288,32 @@ int greaterDatatype(int a, int b)
 	else return b;
 }
 
+
+void checkTypeParam(ASTREE* nodecall, ASTREE* nodedef) 
+{
+	if(!nodecall || !nodedef) return;
+	
+	if(nodecall->son[0] != NULL && nodedef->son[1] != NULL)
+	{
+		nodecall = nodecall->son[0];	
+		nodedef = nodedef->son[1];	
+	
+		while(nodecall != NULL && nodedef != NULL)
+		{	
+			if(nodecall->son[0]->symbol != NULL && nodedef->son[0]->symbol != NULL) 
+				{
+					if(nodecall->son[0]->symbol->datatype > nodedef->son[0]->symbol->datatype)
+					{
+						fprintf(stderr, "ERRO: Tipo de parametro incorreto\n");
+						semanticError++;
+					}
+				}
+				nodecall = nodecall->son[1];
+				nodedef = nodedef->son[1];			
+		}
+	}
+}
+
 void checkNumParam(ASTREE* node)
 {
 	int numParam = 0;
@@ -310,23 +337,4 @@ int countNumParam(ASTREE *node)
 
 	return 0;
 }
-
-//TERMINAR DE IMPLEMENTAR
-void checkTypeParam(ASTREE* node) 
-{
-
-	if(!node) return;
-	
-		if (node->type != ASTREE_SYMBOL)
-		{
-			node = node->son[0];
-			checkTypeParam(node->son[0]);
-		}	
-		else
-		{
-			fprintf(stderr, "\n %d \n", node->symbol->datatype);
-			
-		}
-}
-
 
