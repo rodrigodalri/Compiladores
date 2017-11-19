@@ -22,6 +22,7 @@
 #define SYMBOL_DATATYPE_LONG 202
 #define SYMBOL_DATATYPE_FLOAT 203
 #define SYMBOL_DATATYPE_DOUBLE 204
+#define SYMBOL_DATATYPE_BOOL 205
 
 typedef struct hash_struct
 {

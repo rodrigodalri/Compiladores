@@ -28,6 +28,7 @@ for(i=0; i<HASH_SIZE; ++i)
 	printf("id: %d ", i);
 	printf("Type: %d ", Table[i]->type);
 	printf("DataType: %d ", Table[i]->datatype);
+	printf("NumParam: %d ", Table[i]->numparam);
 	printf("Text: %s\n", Table[i]->text);
 	}
 printf("HASH TABLE\n");

@@ -11,15 +11,11 @@ f: float=10.55;
 c: byte='x';
 d: byte=65;
 
-
 (long) main()
   {
   a = 10;
   v[2] = v[10-1];
 	
- 
-
-
   print "Digite um numero: \n";
   read > i;
   while (i<1)
@@ -46,9 +42,6 @@ if (a==11) then {} else
 	{;};
   {};
   }
-
-
-
 (long) incn (x: long, n: long)
   {return (x+n)}
 

@@ -17,6 +17,7 @@ extern int yyparse();
 extern void initMe();
 extern void hashPrint();
 extern ASTREE* getAst();
+extern void resultSemantic();
 
 FILE *out;
 
@@ -213,7 +214,8 @@ int main(int argc, char *argv[]){
 		fprintf(stderr,"Erro ao fechar o arquivo %s.\n",argv[2]);
 
 	hashPrint();
-    	
+
+	resultSemantic();    	
 
     return 0; 
 }

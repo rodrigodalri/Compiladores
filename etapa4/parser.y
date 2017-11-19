@@ -16,6 +16,7 @@
 	int yylex();
 	int yyerror(char *message);
 	extern int getLineNumber();
+	int erro;
 
 	ASTREE *root;
 %}
@@ -86,7 +87,7 @@
 
 prog : listadeclaracoes { root = $$; 
 			  astreePrint(0, root); 
-			  checkSemantic(root);			   
+			  erro = checkSemantic(root);			   
 			}
      ;
 
@@ -121,7 +122,7 @@ cmd : TK_IDENTIFIER '=' exp			{ $$ = astreeCreate(ASTREE_ATR, $1, $3, 0, 0, 0); 
     | KW_PRINT printaveis 			{ $$ = astreeCreate(ASTREE_PRINT, 0, $2, 0, 0, 0); }
     | KW_READ '>' TK_IDENTIFIER			{ $$ = astreeCreate(ASTREE_READ, $3, 0, 0, 0, 0); }
     | KW_RETURN exp 				{ $$ = astreeCreate(ASTREE_RETURN, 0, $2, 0, 0, 0); }
-    | bloco 
+    | bloco 					{ $$ = $1; }
     |						{ $$ = 0; }
     ;
 
@@ -175,12 +176,22 @@ parametro : TK_IDENTIFIER ':' tipo 	{ $$ = astreeCreate(ASTREE_PARAM, $1, $3, 0,
 	  ;
 %%
 
-ASTREE* getAst(){
+ASTREE* getAst()
+{
 	return root;
 }
 
-int yyerror(char *err){
-	
+void resultSemantic()
+{	
+	if(erro > 0)
+	{
+	fprintf(stderr, "%d erros semanticos.\n", erro);
+	exit(4);
+	}
+}
+
+int yyerror(char *err)
+{
 	fprintf(stderr, "ERRO Parser. Linha = %d\n", getLineNumber());
 	exit(3);
 }
