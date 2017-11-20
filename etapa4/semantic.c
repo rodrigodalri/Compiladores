@@ -247,7 +247,7 @@ void checkOperands(ASTREE* node)
 		checkOperands(node->son[i]);
 }
 
-//             FUNCOES AUXILIARES
+//			FUNCOES AUXILIARES
 
 
 void checkReturn(ASTREE *nodefunc, ASTREE *node)
@@ -257,10 +257,8 @@ void checkReturn(ASTREE *nodefunc, ASTREE *node)
 	
 	if(!node) return;
 	
-	for(i = 0; i < MAX_SONS; i++) 
-		checkReturn(nodefunc, node->son[i]);
-	
-	if(node->type == ASTREE_RETURN){ 
+	if(node->type == ASTREE_RETURN)
+	{ 
 		if(node->son[0] != NULL) 
 			
 			if(node->son[0]->type == ASTREE_PARENTHESIS)
@@ -284,25 +282,31 @@ void checkReturn(ASTREE *nodefunc, ASTREE *node)
 				}
 			}
 	}
+
+	for(i = 0; i < MAX_SONS; i++) 
+		checkReturn(nodefunc, node->son[i]);
+
 }
 
 void linkStart(ASTREE *node, ASTREE *root)
 {
 	int i;
 	ASTREE *fun;
-	if(node)
-	{
-		
+
+	if(!node || !root) return;	
+
 		if(node->type == ASTREE_FUNDEF)
 		{
+			if(node->symbol != NULL)
+			{
 			while((fun = search(root, node->symbol->text)) != NULL)
 				fun->start = node;
+			}		
 		}
 
 		for(i=0; i < MAX_SONS; i++)
-			if(node->son[i])
+			if(node->son[i] != NULL)
 				linkStart(node->son[i], root);
-	}
 }
 
 ASTREE *search(ASTREE *node, char *name)
@@ -310,20 +314,23 @@ ASTREE *search(ASTREE *node, char *name)
 	int i;
 	ASTREE *fun;
 	
-	if(node)
-	{
+	if(!node) return 0;
+
+	
 		if(node->type == ASTREE_FUNCALL && node->start == NULL)
-			if(strcmp(node->symbol->text, name) == 0)
-				return node;
+			if(node->symbol != NULL)
+			{			
+				if(strcmp(node->symbol->text, name) == 0)
+					return node;
+			}
 
 		for(i=0; i < MAX_SONS; i++)
-			if(node->son[i]) 
+			if(node->son[i] != NULL) 
 			{
 				fun = search(node->son[i], name);
 				if(fun) 
 					return fun;
 			}
-	}
 	return 0;
 }
 
@@ -382,4 +389,4 @@ int greaterDatatype(int a, int b)
 	else return b;
 }
 
-//             FUNCOES AUXILIARES
+//				FUNCOES AUXILIARES
