@@ -185,8 +185,8 @@ void resultSemantic()
 {	
 	if(erro > 0)
 	{
-	fprintf(stderr, "%d erros semanticos.\n", erro);
-	exit(4);
+		fprintf(stderr, "%d erros semanticos.\n", erro);
+		exit(4);
 	}
 }
 

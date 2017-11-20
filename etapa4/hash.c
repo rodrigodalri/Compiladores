@@ -3,11 +3,11 @@
 	Gabriel Zillmer e Rodrigo dal Ri 
 */
 
-#include "hash.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+#include "hash.h"
 
 void hashInit()
 {
@@ -25,10 +25,10 @@ printf("HASH TABLE\n");
 for(i=0; i<HASH_SIZE; ++i)
     for(node=Table[i]; node; node = node->next){
      
-	printf("id: %d ", i);
-	printf("Type: %d ", Table[i]->type);
-	printf("DataType: %d ", Table[i]->datatype);
-	//printf("NumParam: %d ", Table[i]->numparam);
+	printf("id: %d	", i);
+	printf("Type: %d	", Table[i]->type);
+	printf("DataType: %d	", Table[i]->datatype);
+	//printf("NumParam: %d	", Table[i]->numparam);
 	printf("Text: %s\n", Table[i]->text);
 	}
 printf("HASH TABLE\n");
@@ -82,9 +82,6 @@ Hash_Node *hashInsert(int type, char *text)
 	
 	return newnode;
 }
-
-
-
 
 void hashCheckUndeclared(){
 	int i;

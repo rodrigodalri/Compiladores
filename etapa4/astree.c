@@ -5,10 +5,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "astree.h"
-
 
 ASTREE* astreeCreate(int type, Hash_Node* symbol, ASTREE* son0, ASTREE* son1, ASTREE* son2, ASTREE* son3){
 	ASTREE *node = calloc(1, sizeof(ASTREE));
@@ -81,45 +79,5 @@ void astreePrint(int level, ASTREE *node){
 	for(i = 0; i < MAX_SONS; i++){
 		astreePrint(level+1, node->son[i]);
 	}
-}
-
-void linkStart(ASTREE *node, ASTREE *root)
-{
-	int i;
-	ASTREE *fun;
-	if(node)
-	{
-		
-		if(node->type == ASTREE_FUNDEF)
-		{
-			while((fun = search(root, node->symbol->text)) != NULL)
-				fun->start = node;
-		}
-
-		for(i=0; i < MAX_SONS; i++)
-			if(node->son[i])
-				linkStart(node->son[i], root);
-	}
-}
-
-ASTREE *search(ASTREE *node, char *name)
-{
-	int i;
-	ASTREE *fun;
-	if(node)
-	{
-		if(node->type == ASTREE_FUNCALL && node->start == NULL)
-			if(strcmp(node->symbol->text, name) == 0)
-				return node;
-
-		for(i=0; i < MAX_SONS; i++)
-			if(node->son[i]) 
-			{
-				fun = search(node->son[i], name);
-				if(fun) 
-					return fun;
-			}
-	}
-	return NULL;
 }
 

@@ -2,6 +2,7 @@
 	ETAPA 4 - TRABALHO DE COMPILADORES
 	Gabriel Zillmer e Rodrigo dal Ri 
 */
+
 #ifndef HASH_H
 #define HASH_H
 

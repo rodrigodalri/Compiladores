@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "semantic.h"
 #include "hash.h"
@@ -25,9 +26,167 @@ int checkSemantic(ASTREE* node)
 	
 }
 
+void setTypes(ASTREE* node)
+{
+	int i;
+	if (!node) return;
+	
+	if(node->type == ASTREE_VARINI){
+		if(node->symbol->type != SYMBOL_IDENTIFIER){
+			fprintf(stderr,"ERRO: Identificador ja foi declarado! \n");
+			semanticError++;
+		}
+		else{
+			node->symbol->type = SYMBOL_VAR;
+			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
+			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
+			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
+			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
+			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
+		}
+	}
+	if(node->type == ASTREE_ARRINI){
+		if(node->symbol->type != SYMBOL_IDENTIFIER){
+			fprintf(stderr,"ERRO: Identificador ja foi declarado! \n");
+			semanticError++;
+		}
+		else{
+			node->symbol->type = SYMBOL_ARR;
+			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
+			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
+			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
+			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
+			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
+		}
+	}
+	if (node->type == ASTREE_FUNDEF){
+		if(node->symbol->type != SYMBOL_IDENTIFIER){
+			fprintf(stderr, "ERRO: Identificador ja foi declarado! \n");
+			semanticError++;
+		}
+		else{
+			node->symbol->type = SYMBOL_FUN;
+			node->symbol->numparam = countNumParam(node->son[1]);
+			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
+			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
+			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
+			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
+			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
+		}
+	}
+	if(node->type == ASTREE_PARAM){
+		if(node->symbol->type != SYMBOL_IDENTIFIER){
+			fprintf(stderr, "ERRO: Identificador ja foi declarado! \n");
+			semanticError++;
+		}
+		else{
+			node->symbol->type = SYMBOL_VAR;
+			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
+			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
+			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
+			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
+			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
+		}
+	}
+	for (i=0; i<MAX_SONS; ++i)
+		setTypes(node->son[i]);
+}
+
 void checkUndeclared(void)
 {
 	hashCheckUndeclared();
+}
+
+void checkUsage(ASTREE *node)
+{
+	int i;
+	
+	if(!node) return;
+	
+	switch(node->type){
+		case ASTREE_ATR: if(node->symbol->type != SYMBOL_VAR)
+			{
+				fprintf(stderr, "ERRO: identificador deve ser escalar.\n");
+				semanticError++;
+			}
+			break;
+		case ASTREE_FUNCALL: if(node->symbol->type != SYMBOL_FUN)
+			{
+				fprintf(stderr, "ERRO: identificador deve ser funcao.\n");
+				semanticError++;
+			}
+			checkNumParam(node);
+			checkTypeParam(node, node->start); 
+			break;
+		case ASTREE_FUNDEF: checkReturn(node, node->son[2]);
+			break;
+		case ASTREE_ARRAY_WRITE: if(node->symbol->type != SYMBOL_ARR)
+			{
+				fprintf(stderr, "ERRO: identificador deve ser vetor.\n");
+				semanticError++;
+			}
+			if(node->son[0]->symbol != NULL) {	
+			if(node->son[0]->symbol->datatype == SYMBOL_DATATYPE_FLOAT || node->son[0]->symbol->datatype == SYMBOL_DATATYPE_DOUBLE)
+			{
+				fprintf(stderr, "ERRO: indice deve ser int.\n");
+				semanticError++;
+			}}
+			break;
+		case ASTREE_ARRAY_READ: if(node->symbol->type != SYMBOL_ARR)
+			{
+				fprintf(stderr, "ERRO: identificador deve ser vetor.\n");
+				semanticError++;
+			}
+			if(node->son[0]->symbol != NULL) {			
+			if(node->son[0]->symbol->datatype == SYMBOL_DATATYPE_FLOAT || node->son[0]->symbol->datatype == SYMBOL_DATATYPE_DOUBLE)
+			{
+				fprintf(stderr, "ERRO: indice deve ser int.\n");
+				semanticError++;
+			}}
+			break;
+		case ASTREE_IF:  
+   			{	if(node->son[0]->symbol != NULL) {
+        			if (node->son[0]->type != ASTREE_L && node->son[0]->type != ASTREE_G && node->son[0]->type != ASTREE_LE && node->son[0]->type != ASTREE_GE && node->son[0]->type != ASTREE_EQ && node->son[0]->type != ASTREE_NE && node->son[0]->type != ASTREE_NOT)
+       				{
+            				fprintf(stderr, "ERRO: deve ser condicional\n");
+            				semanticError++;
+        			}}
+    			}
+			break; 
+		case ASTREE_WHILE:
+   			{	if(node->son[0]->symbol != NULL) {
+        			if (node->son[0]->type != ASTREE_L && node->son[0]->type != ASTREE_G && node->son[0]->type != ASTREE_LE && node->son[0]->type != ASTREE_GE && node->son[0]->type != ASTREE_EQ && node->son[0]->type != ASTREE_NE && node->son[0]->type != ASTREE_NOT)
+       				{
+            				fprintf(stderr, "ERRO: deve ser condicional\n");
+            				semanticError++;
+        			}}
+    			} 
+			break;
+		case ASTREE_PRINT:
+			if(node->son[0]->symbol != NULL) {
+			if(node->son[0]->symbol->type != SYMBOL_LIT_STRING)
+			{
+				fprintf(stderr, "ERRO: deve ser string.\n");
+				semanticError++;
+			}}
+			break;
+		case ASTREE_READ:if(node->symbol->type != SYMBOL_VAR)
+			{
+				fprintf(stderr, "ERRO: identificador deve ser escalar.\n");
+				semanticError++;
+			}
+		break;
+		case ASTREE_SYMBOL: if(node->symbol->type != SYMBOL_VAR && node->symbol->type != SYMBOL_LIT_INT && node->symbol->type != SYMBOL_LIT_REAL && node->symbol->type != SYMBOL_LIT_CHAR && node->symbol->type != SYMBOL_LIT_STRING)
+			{
+				fprintf(stderr, "ERRO: identificador deve ser escalar.\n");
+				semanticError++;
+			}
+			break;
+		default: break;
+	}
+	
+	for(i=0; i <MAX_SONS; ++i)
+		checkUsage(node->son[i]);
 }
 
 void checkOperands(ASTREE* node)
@@ -88,163 +247,8 @@ void checkOperands(ASTREE* node)
 		checkOperands(node->son[i]);
 }
 
-void setTypes(ASTREE* node)
-{
-	int i;
-	if (!node) return;
-	
-	if(node->type == ASTREE_VARINI){
-		if(node->symbol->type != SYMBOL_IDENTIFIER){
-			fprintf(stderr,"ERRO: Identificador %s, ja foi declarado! \n",node->symbol->text);
-			semanticError++;
-		}
-		else{
-			node->symbol->type = SYMBOL_VAR;
-			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
-			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
-			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
-			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
-			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
-		}
-	}
-	if(node->type == ASTREE_ARRINI){
-		if(node->symbol->type != SYMBOL_IDENTIFIER){
-			fprintf(stderr,"ERRO: Identificador %s, ja foi declarado! \n",node->symbol->text);
-			semanticError++;
-		}
-		else{
-			node->symbol->type = SYMBOL_ARR;
-			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
-			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
-			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
-			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
-			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
-		}
-	}
-	if (node->type == ASTREE_FUNDEF){
-		if(node->symbol->type != SYMBOL_IDENTIFIER){
-			fprintf(stderr, "ERRO: Identificador %s, ja foi declarado! \n", node->symbol->text);
-			semanticError++;
-		}
-		else{
-			node->symbol->type = SYMBOL_FUN;
-			node->symbol->numparam = countNumParam(node->son[1]);
-			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
-			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
-			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
-			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
-			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
-		}
-	}
-	if(node->type == ASTREE_PARAM){
-		if(node->symbol->type != SYMBOL_IDENTIFIER){
-			fprintf(stderr, "ERRO: Identificador %s, ja foi declarado! \n", node->symbol->text);
-			semanticError++;
-		}
-		else{
-			node->symbol->type = SYMBOL_VAR;
-			if(node->son[0]->type == ASTREE_BYTE) node->symbol->datatype = SYMBOL_DATATYPE_BYTE;
-			if(node->son[0]->type == ASTREE_SHORT) node->symbol->datatype = SYMBOL_DATATYPE_SHORT;
-			if(node->son[0]->type == ASTREE_LONG) node->symbol->datatype = SYMBOL_DATATYPE_LONG;
-			if(node->son[0]->type == ASTREE_FLOAT) node->symbol->datatype = SYMBOL_DATATYPE_FLOAT;
-			if(node->son[0]->type == ASTREE_DOUBLE) node->symbol->datatype = SYMBOL_DATATYPE_DOUBLE;
-		}
-	}
-	for (i=0; i<MAX_SONS; ++i)
-		setTypes(node->son[i]);
-}
+//             FUNCOES AUXILIARES
 
-void checkUsage(ASTREE *node)
-{
-	int i;
-	
-	if(!node) return;
-	
-	switch(node->type){
-		case ASTREE_ATR: if(node->symbol->type != SYMBOL_VAR)
-			{
-				fprintf(stderr, "ERRO: identificador %s deve ser escalar.\n", node->symbol->text);
-				semanticError++;
-			}
-			break;
-		case ASTREE_FUNCALL: if(node->symbol->type != SYMBOL_FUN)
-			{
-				fprintf(stderr, "ERRO: identificador %s deve ser funcao.\n", node->symbol->text);
-				semanticError++;
-			}
-			checkNumParam(node);
-			checkTypeParam(node, node->start); 
-			break;
-		case ASTREE_FUNDEF: checkReturn(node, node->son[2]);
-			break;
-		case ASTREE_ARRAY_WRITE: if(node->symbol->type != SYMBOL_ARR)
-			{
-				fprintf(stderr, "ERRO: identificador %s deve ser vetor.\n", node->symbol->text);
-				semanticError++;
-			}
-			if(node->son[0]->symbol != NULL) {	
-			if(node->son[0]->symbol->datatype == SYMBOL_DATATYPE_FLOAT || node->son[0]->symbol->datatype == SYMBOL_DATATYPE_DOUBLE)
-			{
-				fprintf(stderr, "ERRO: indice deve ser int.\n");
-				semanticError++;
-			}}
-			break;
-		case ASTREE_ARRAY_READ: if(node->symbol->type != SYMBOL_ARR)
-			{
-				fprintf(stderr, "ERRO: identificador %s deve ser vetor.\n", node->symbol->text);
-				semanticError++;
-			}
-			if(node->son[0]->symbol != NULL) {			
-			if(node->son[0]->symbol->datatype == SYMBOL_DATATYPE_FLOAT || node->son[0]->symbol->datatype == SYMBOL_DATATYPE_DOUBLE)
-			{
-				fprintf(stderr, "ERRO: indice deve ser int.\n");
-				semanticError++;
-			}}
-			break;
-		case ASTREE_IF:  
-   			{	if(node->son[0]->symbol != NULL) {
-        			if (node->son[0]->type != ASTREE_L && node->son[0]->type != ASTREE_G && node->son[0]->type != ASTREE_LE && node->son[0]->type != ASTREE_GE && node->son[0]->type != ASTREE_EQ && node->son[0]->type != ASTREE_NE && node->son[0]->type != ASTREE_NOT)
-       				{
-            				fprintf(stderr, "ERRO: deve ser condicional\n");
-            				semanticError++;
-        			}}
-    			}
-			break; 
-		case ASTREE_WHILE:
-   			{	if(node->son[0]->symbol != NULL) {
-        			if (node->son[0]->type != ASTREE_L && node->son[0]->type != ASTREE_G && node->son[0]->type != ASTREE_LE && node->son[0]->type != ASTREE_GE && node->son[0]->type != ASTREE_EQ && node->son[0]->type != ASTREE_NE && node->son[0]->type != ASTREE_NOT)
-       				{
-            				fprintf(stderr, "ERRO: deve ser condicional\n");
-            				semanticError++;
-        			}}
-    			} 
-			break;
-		case ASTREE_PRINT:
-			if(node->son[0]->symbol != NULL) {
-			if(node->son[0]->symbol->type != SYMBOL_LIT_STRING)
-			{
-				fprintf(stderr, "ERRO: deve ser string.\n");
-				semanticError++;
-			}}
-			break;
-		case ASTREE_READ:if(node->symbol->type != SYMBOL_VAR)
-			{
-				fprintf(stderr, "ERRO: identificador %s deve ser escalar.\n", node->symbol->text);
-				semanticError++;
-			}
-		break;
-		case ASTREE_SYMBOL: if(node->symbol->type != SYMBOL_VAR && node->symbol->type != SYMBOL_LIT_INT && node->symbol->type != SYMBOL_LIT_REAL && node->symbol->type != SYMBOL_LIT_CHAR && node->symbol->type != SYMBOL_LIT_STRING)
-			{
-				fprintf(stderr, "ERRO: identificador %s deve ser escalar.\n", node->symbol->text);
-				semanticError++;
-			}
-			break;
-		default: break;
-	}
-	
-	for(i=0; i <MAX_SONS; ++i)
-		checkUsage(node->son[i]);
-}
 
 void checkReturn(ASTREE *nodefunc, ASTREE *node)
 {	
@@ -282,12 +286,46 @@ void checkReturn(ASTREE *nodefunc, ASTREE *node)
 	}
 }
 
-int greaterDatatype(int a, int b)
+void linkStart(ASTREE *node, ASTREE *root)
 {
-	if(a > b) return a;
-	else return b;
+	int i;
+	ASTREE *fun;
+	if(node)
+	{
+		
+		if(node->type == ASTREE_FUNDEF)
+		{
+			while((fun = search(root, node->symbol->text)) != NULL)
+				fun->start = node;
+		}
+
+		for(i=0; i < MAX_SONS; i++)
+			if(node->son[i])
+				linkStart(node->son[i], root);
+	}
 }
 
+ASTREE *search(ASTREE *node, char *name)
+{
+	int i;
+	ASTREE *fun;
+	
+	if(node)
+	{
+		if(node->type == ASTREE_FUNCALL && node->start == NULL)
+			if(strcmp(node->symbol->text, name) == 0)
+				return node;
+
+		for(i=0; i < MAX_SONS; i++)
+			if(node->son[i]) 
+			{
+				fun = search(node->son[i], name);
+				if(fun) 
+					return fun;
+			}
+	}
+	return 0;
+}
 
 void checkTypeParam(ASTREE* nodecall, ASTREE* nodedef) 
 {
@@ -338,3 +376,10 @@ int countNumParam(ASTREE *node)
 	return 0;
 }
 
+int greaterDatatype(int a, int b)
+{
+	if(a > b) return a;
+	else return b;
+}
+
+//             FUNCOES AUXILIARES
