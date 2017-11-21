@@ -71,9 +71,9 @@ Hash_Node *hashInsert(int type, char *text)
 	address = hashAddress(text);
 	newnode = (Hash_Node*) calloc(1, sizeof(Hash_Node));
 	newnode->type = type;
-	if (type == SYMBOL_LIT_INT) newnode->datatype = SYMBOL_DATATYPE_SHORT;
-	if (type == SYMBOL_LIT_REAL) newnode->datatype = SYMBOL_DATATYPE_FLOAT;
-	if (type == SYMBOL_LIT_CHAR) newnode->datatype = SYMBOL_DATATYPE_BYTE;
+	if (type == SYMBOL_LIT_INT) newnode->datatype = SYMBOL_DATATYPE_LONG;
+	if (type == SYMBOL_LIT_REAL) newnode->datatype = SYMBOL_DATATYPE_DOUBLE;
+	if (type == SYMBOL_LIT_CHAR) newnode->datatype = SYMBOL_DATATYPE_LONG;
 	if (type == SYMBOL_LIT_STRING) newnode->datatype = SYMBOL_DATATYPE_DOUBLE;
 	newnode->text = calloc(strlen(text)+1, sizeof(char));
 	strcpy(newnode->text, text);

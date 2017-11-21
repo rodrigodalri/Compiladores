@@ -14,8 +14,12 @@ d: byte=65;
 (long) main()
   {
   a = 10;
-  v[2] = v[10-1];
-	
+  a = 5.5;          //arrumar eu acho
+  v[2] = v[10-1.5]; //arrumar
+  v[2] = v[10*1];   //arrumar
+  v[2] = v[10/1];   //arrumar	
+  v[2] = v[10>1];   //arrumar	
+
   print "Digite um numero: \n";
   read > i;
   while (i<1)
@@ -43,7 +47,7 @@ if (a==11) then {} else
   {};
   }
 (long) incn (x: long, n: long)
-  {return (x+n)}
+  {return (x*n)}
 
 (short) voidfunc() {}
 

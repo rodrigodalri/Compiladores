@@ -254,6 +254,7 @@ void checkReturn(ASTREE *nodefunc, ASTREE *node)
 {	
 	int i = 0;
 	int data;
+	int flag = 0;
 	
 	if(!node) return;
 	
@@ -263,19 +264,33 @@ void checkReturn(ASTREE *nodefunc, ASTREE *node)
 			
 			if(node->son[0]->type == ASTREE_PARENTHESIS)
 			{	
-				if(node->son[0]->son[0]->type == ASTREE_ADD || node->son[0]->son[0]->type == ASTREE_SUB || node->son[0]->son[0]->type == ASTREE_MUL || node->son[0]->son[0]->type == ASTREE_DIV ){
+				if(node->son[0]->son[0]->type == ASTREE_ADD || node->son[0]->son[0]->type == ASTREE_SUB || node->son[0]->son[0]->type == ASTREE_MUL || node->son[0]->son[0]->type == ASTREE_DIV )
+				{
 			
 				data = greaterDatatype(node->son[0]->son[0]->son[0]->symbol->datatype, node->son[0]->son[0]->son[1]->symbol->datatype);
 				}
-				else 
+				 
+				else {
+
+				if(node->son[0]->son[0]->type == ASTREE_L || node->son[0]->son[0]->type == ASTREE_G || node->son[0]->son[0]->type == ASTREE_LE || node->son[0]->son[0]->type == ASTREE_GE || node->son[0]->son[0]->type == ASTREE_EQ || node->son[0]->son[0]->type == ASTREE_NE || node->son[0]->son[0]->type == ASTREE_NOT || node->son[0]->son[0]->type == ASTREE_AND || node->son[0]->son[0]->type == ASTREE_OR)	
+				{
+					fprintf(stderr, "ERRO: retorno invalido.\n");
+					flag = 1;	
+					semanticError++;
+
+				}
+
+				else
 				{
 					data = node->son[0]->son[0]->symbol->datatype; 
-				}			
+				}
+
+}			
 			}
 
 			if(nodefunc->symbol != NULL)
 			{
-				if (data != nodefunc->symbol->datatype)
+				if (data != nodefunc->symbol->datatype && flag == 0)
 				{
 					fprintf(stderr, "ERRO: tipo retorno invalido.\n");	
 					semanticError++;
