@@ -6,19 +6,20 @@
 a: short=0;
 i: long=0;
 v: long[10] 9 0 0 0 0 0 7 0 0 0; 
-mat: long[10]; 
+mat: short[10]; 
 f: float=10.55;
 c: byte='x';
 d: byte=65;
+e: double=60000005.6;
 
 (long) main()
   {
   a = 10;
-  a = 5.5;          //arrumar eu acho
-  v[2] = v[10-1.5]; //arrumar
-  v[2] = v[10*1];   //arrumar
-  v[2] = v[10/1];   //arrumar	
-  v[2] = v[10>1];   //arrumar	
+  f = 5;
+  v[3-1] = v[10]; 
+  a = v[105];
+  a = v[10-5];
+  mat[1] = 55;
 
   print "Digite um numero: \n";
   read > i;
@@ -46,8 +47,8 @@ if (a==11) then {} else
 	{;};
   {};
   }
-(long) incn (x: long, n: long)
-  {return (x*n)}
+(long) incn (x: short, n: long)
+  {return (x+n)}
 
 (short) voidfunc() {}
 

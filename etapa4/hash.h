@@ -21,15 +21,16 @@
 #define SYMBOL_DATATYPE_BYTE 201
 #define SYMBOL_DATATYPE_SHORT 202
 #define SYMBOL_DATATYPE_LONG 203
+
 #define SYMBOL_DATATYPE_FLOAT 204
 #define SYMBOL_DATATYPE_DOUBLE 205
+
 #define SYMBOL_DATATYPE_BOOL 206
 
 typedef struct hash_struct
 {
 	int type;
 	int datatype;
-	int typeparam;
 	int numparam;
 	char* text;
 	struct hash_struct *next; 
