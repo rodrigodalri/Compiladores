@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "tac.h"
 
-TAC* tacCreate(int type, HASH_NODE *res, HASH_NODE *op1, HASH_NODE *op2){
+TAC* tacCreate(int type, Hash_Node *res, Hash_Node *op1, Hash_Node *op2){
 	TAC *n = (TAC*) calloc(1, sizeof(TAC));
 	n->type = type;
 	n->res = res;
