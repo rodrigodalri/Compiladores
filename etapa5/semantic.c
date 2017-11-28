@@ -17,7 +17,7 @@ ASTREE *raiz;
 int checkSemantic(ASTREE* node)
 {
 	raiz = node;	
-	
+				
 	setTypes(node); 
 	checkUndeclared();
 	checkUsage(node);
@@ -272,22 +272,28 @@ void checkOperands(ASTREE* node)
 	}
 		
 	if (node->type == ASTREE_AND || node->type == ASTREE_OR || node->type == ASTREE_NOT){
-	
-		if(node->son[0]->type == ASTREE_MUL ||
-		   node->son[0]->type == ASTREE_ADD || 
-		   node->son[0]->type == ASTREE_SUB || 
-		   node->son[0]->type == ASTREE_DIV){
+		if(node->son[0] != NULL)
+		{
+			if(node->son[0]->type == ASTREE_MUL ||
+			   node->son[0]->type == ASTREE_ADD || 
+			   node->son[0]->type == ASTREE_SUB || 
+			   node->son[0]->type == ASTREE_DIV){
 
-			fprintf(stderr, "ERRO: Operando esquerdo não pode ser aritmético. \n");
-			semanticError++;
+				fprintf(stderr, "ERRO: Operando esquerdo não pode ser aritmético. \n");
+				semanticError++;
+			}
 		}
-		if(node->son[1]->type == ASTREE_MUL ||
-		   node->son[1]->type == ASTREE_ADD || 
-		   node->son[1]->type == ASTREE_SUB || 
-		   node->son[1]->type == ASTREE_DIV){
+
+		if(node->son[1] != NULL)
+		{
+			if(node->son[1]->type == ASTREE_MUL ||
+		   	   node->son[1]->type == ASTREE_ADD || 
+		           node->son[1]->type == ASTREE_SUB || 
+		           node->son[1]->type == ASTREE_DIV){
 
 			fprintf(stderr, "ERRO: Operando direito não pode ser aritmético. \n");
 			semanticError++;
+			}
 		}
 	}
 	

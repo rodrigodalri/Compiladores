@@ -11,6 +11,7 @@
 	#include "astree.h"
 	#include "hash.h"
 	#include "semantic.h"	
+	#include "tac.h"
 	
 		
 	int yylex();
@@ -86,8 +87,9 @@
 
 
 prog : listadeclaracoes { root = $$; 
-			  astreePrint(0, root); 
-			  erro = checkSemantic(root);			   
+			  astreePrint(0, root);  
+			  erro = checkSemantic(root);
+			  tacPrintFoward(tacReverse(tacGenerate($1)));
 			}
      ;
 

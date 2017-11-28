@@ -213,6 +213,7 @@ int main(int argc, char *argv[]){
 	if((fecha = fclose(out)) != 0)
 		fprintf(stderr,"Erro ao fechar o arquivo %s.\n",argv[2]);
 
+	fprintf(stderr,"\n");
 	hashPrint();
 
 	resultSemantic();    	
