@@ -62,8 +62,6 @@ TAC* tacReverse(TAC* tac)
 	return t;
 }
 
-int parNumber_ = 0;
-
 void tacPrintOne(TAC *tac)
 {
 		if(tac->type == TAC_SYMBOL) return;
@@ -86,12 +84,10 @@ void tacPrintOne(TAC *tac)
 			case TAC_MOVE: fprintf(stderr, "TAC_MOVE"); break;
 			case TAC_READ: fprintf(stderr, "TAC_READ"); break;
 			case TAC_RET: fprintf(stderr, "TAC_RET"); break;
-			case TAC_INC: fprintf(stderr, "TAC_INC"); break;
 			case TAC_IFZ: fprintf(stderr, "TAC_IFZ"); break;
 			case TAC_LABEL: fprintf(stderr, "TAC_LABEL"); break;
 			case TAC_JUMP: fprintf(stderr, "TAC_JUMP"); break;
 			case TAC_PRINT: fprintf(stderr, "TAC_PRINT"); break;
-			case TAC_PARPUSH: fprintf(stderr, "TAC_PARPUSH"); break;
 			case TAC_PARPOP: fprintf(stderr, "TAC_PARPOP"); break;
 			case TAC_FUNCALL: fprintf(stderr, "TAC_FUNCALL"); break;
 			case TAC_BEGINFUN: fprintf(stderr, "TAC_BEGINFUN"); break;
@@ -135,7 +131,7 @@ TAC* tacGenerate(ASTREE *node)
 			case ASTREE_NE: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_NE, makeTemp(), code[0]?code[0]->res:0, code[1]?code[1]->res:0))); break; 
 			case ASTREE_AND: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_AND, makeTemp(), code[0]?code[0]->res:0, code[1]?code[1]->res:0))); break; 
 			case ASTREE_OR: result = tacJoin(code[0],tacJoin(code[1],tacCreate(TAC_OR, makeTemp(), code[0]?code[0]->res:0, code[1]?code[1]->res:0))); break; 
-			case ASTREE_NOT: result = tacJoin(tacJoin(code[0], code[1]),tacCreate(TAC_NOT, makeTemp(), code[0]?code[0]->res:0, code[1]?code[1]->res:0)); break; 
+			//case ASTREE_NOT: result = tacJoin(tacJoin(code[0], code[1]),tacCreate(TAC_NOT, makeTemp(), code[0]?code[0]->res:0, code[1]?code[1]->res:0)); break; 
 			case ASTREE_ATR: result = tacJoin(code[0], tacCreate(TAC_MOVE, node->symbol, code[0]?code[0]->res:0, 0)); break;
 			case ASTREE_READ: result = tacCreate(TAC_READ, node->symbol, 0, 0); break;
 			case ASTREE_RETURN: result = tacJoin(code[0], tacCreate(TAC_RET, node->symbol, code[0]?code[0]->res:0, 0)); break;
@@ -143,7 +139,6 @@ TAC* tacGenerate(ASTREE *node)
 			case ASTREE_ELSE: result = makeIfThenElse(code[0], code[1], code[2]); break;
 			case ASTREE_WHILE: result = makeWhile(code[0], code[1]); break;
 			case ASTREE_PRINTL: result = tacJoin(tacCreate(TAC_PRINT, code[0]?code[0]->res:0, 0, 0), code[1]); break;
-			case ASTREE_PARCALLL: result = tacJoin(code[1], tacCreate(TAC_PARPUSH, code[0]?code[0]->res:0, 0, 0)); break;
 			case ASTREE_FUNCALL: result = tacJoin(code[0], tacCreate(TAC_FUNCALL, makeTemp(), node->symbol, 0)); break;
 			case ASTREE_FUNDEF: result = makeFunction(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[1], code[2]); break;
 			case ASTREE_PARAM: result = tacCreate(TAC_PARPOP, node->symbol, 0, 0); break;
