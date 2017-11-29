@@ -111,7 +111,7 @@ void checkUsage(ASTREE *node)
 			}
 			if(node->son[0]->symbol != NULL) 
 			{	
-				if(node->symbol->datatype <= SYMBOL_DATATYPE_LONG && node->son[0]->symbol->datatype >= SYMBOL_DATATYPE_FLOAT)
+				if((node->symbol->datatype <= SYMBOL_DATATYPE_LONG && node->son[0]->symbol->datatype >= SYMBOL_DATATYPE_FLOAT) || (node->symbol->datatype >= SYMBOL_DATATYPE_FLOAT && node->son[0]->symbol->datatype <= SYMBOL_DATATYPE_LONG))
 				{
 					fprintf(stderr, "ERRO: tipos incompativeis.\n");
 					semanticError++;
@@ -143,7 +143,7 @@ void checkUsage(ASTREE *node)
 			}
 			if(node->son[1]->symbol != NULL) 
 			{	
-				if(node->symbol->datatype <= SYMBOL_DATATYPE_LONG && node->son[1]->symbol->datatype >= SYMBOL_DATATYPE_FLOAT)
+				if((node->symbol->datatype <= SYMBOL_DATATYPE_LONG && node->son[1]->symbol->datatype >= SYMBOL_DATATYPE_FLOAT) || (node->symbol->datatype >= SYMBOL_DATATYPE_FLOAT && node->son[1]->symbol->datatype <= SYMBOL_DATATYPE_LONG))
 				{
 					fprintf(stderr, "ERRO: tipos incompativeis.\n");
 					semanticError++;
