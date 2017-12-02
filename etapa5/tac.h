@@ -36,8 +36,8 @@
 #define TAC_AWRITE 26
 #define TAC_AINIPUSH 27
 #define TAC_ASIZE 28
-#define TAC_ADECLPOP 29
-#define TAC_PARPOP 30
+#define TAC_PARPOP 29
+#define TAC_PARPUSH 30
 			
 typedef struct tac_struct{
 	int type;

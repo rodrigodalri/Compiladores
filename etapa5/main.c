@@ -134,6 +134,12 @@ void uncompile(ASTREE *ast){
                 		}else
                     			uncompile(ast->son[0]);
                 		break;
+			case ASTREE_PARCALLL:
+                		if(ast->son[1] != NULL){
+                    			uncompile(ast->son[0]); fprintf(out,","); uncompile(ast->son[1]);
+                		}else
+                    			uncompile(ast->son[0]);
+                		break;
             		case ASTREE_INTL:
 				if(ast->son[1] != NULL){
                     			uncompile(ast->son[0]); fprintf(out," "); uncompile(ast->son[1]);

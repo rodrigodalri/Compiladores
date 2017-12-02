@@ -77,7 +77,9 @@
 %type <astree>literal
 %type <astree>printaveis
 %type <astree>listaparametros
+%type <astree>listaparametroscall
 %type <astree>parametrosfim
+%type <astree>parametrosfim2
 %type <astree>parametro
 
 %type <astree>prog
@@ -130,7 +132,7 @@ cmd : TK_IDENTIFIER '=' exp			{ $$ = astreeCreate(ASTREE_ATR, $1, $3, 0, 0, 0); 
 
 exp : TK_IDENTIFIER 				{ $$ = astreeCreate(ASTREE_SYMBOL, $1, 0, 0, 0, 0); }
     | TK_IDENTIFIER '[' exp ']' 		{ $$ = astreeCreate(ASTREE_ARRAY_READ, $1, $3, 0, 0, 0); }
-    | TK_IDENTIFIER '(' listaparametros ')' 	{ $$ = astreeCreate(ASTREE_FUNCALL, $1, $3, 0, 0, 0); }
+    | TK_IDENTIFIER '(' listaparametroscall ')' 	{ $$ = astreeCreate(ASTREE_FUNCALL, $1, $3, 0, 0, 0); }
     | literal					{$$ = $1;}
     | LIT_STRING				{ $$ = astreeCreate(ASTREE_SYMBOL, $1, 0, 0, 0, 0); }
     | exp '+' exp				{ $$ = astreeCreate(ASTREE_ADD, 0, $1, $3, 0, 0); }
@@ -172,6 +174,15 @@ listaparametros : parametro parametrosfim       { $$ = astreeCreate(ASTREE_PARL,
 parametrosfim : ',' parametro parametrosfim     { $$ = astreeCreate(ASTREE_PARL, 0, $2, $3, 0, 0); }  
 	      | 				{ $$ = 0; }	
 	      ;
+
+listaparametroscall :  parametro parametrosfim2   { $$ = astreeCreate(ASTREE_PARCALLL, 0, $1, $2, 0, 0); }		
+		    | 				   { $$ = 0; }
+		    ;
+
+parametrosfim2 : ',' parametro parametrosfim2     { $$ = astreeCreate(ASTREE_PARCALLL, 0, $2, $3, 0, 0); }  
+	      | 				{ $$ = 0; }	
+	      ;
+
 
 parametro : TK_IDENTIFIER ':' tipo 	{ $$ = astreeCreate(ASTREE_PARAM, $1, $3, 0, 0, 0); } 
           | exp

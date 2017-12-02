@@ -48,9 +48,13 @@ if (a==11) then {} else
 	{;};
   {};
   }
+
 (long) incn (x: short, n: long)
   {return (x+n)}
 
-(short) voidfunc() {}
+(short) voidfunc() {
+
+
+}
 
   

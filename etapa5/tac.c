@@ -96,8 +96,8 @@ void tacPrintOne(TAC *tac)
 			case TAC_AWRITE: fprintf(stderr, "TAC_AWRITE"); break;			
 			case TAC_AINIPUSH: fprintf(stderr, "TAC_AINIPUSH"); break;
 			case TAC_ASIZE: fprintf(stderr, "TAC_ASIZE"); break;
-			case TAC_ADECLPOP: fprintf(stderr, "TAC_ADECLPOP"); break;
-
+			case TAC_PARPUSH: fprintf(stderr, "TAC_PARPUSH"); break;
+			
 			default: fprintf(stderr, "TAC_UNKNOWN"); break;
 		}
 		if(tac->res) fprintf(stderr, ",%s", tac->res->text); else fprintf(stderr, ",0");
@@ -143,16 +143,20 @@ TAC* tacGenerate(ASTREE *node)
 		case ASTREE_WHILE: result = makeWhile(code[0], code[1]); break;
 		case ASTREE_PRINTL: result = tacJoin(tacCreate(TAC_PRINT, code[0]?code[0]->res:0, 0, 0), code[1]); break;
 		case ASTREE_FUNCALL: result = tacJoin(code[0], tacCreate(TAC_FUNCALL, makeTemp(), node->symbol, 0)); break;
+		case ASTREE_PARCALLL: result = tacJoin(code[1], tacCreate(TAC_PARPUSH, code[0]?code[0]->res:0, 0, 0)); break;
 		case ASTREE_FUNDEF: result = makeFunction(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[1], code[2]); break;
 		case ASTREE_PARAM: result = tacCreate(TAC_PARPOP, node->symbol, 0, 0); break;
 		case ASTREE_PARL: result = tacJoin(code[0], code[1]); break;
+		
+
+		//NÃO SEI SE PRECISA
 		case ASTREE_ARRAY_READ: result = tacCreate(TAC_AREAD, makeTemp(), node->symbol, code[0]?code[0]->res:0); break;
 		case ASTREE_ARRAY_WRITE: result = tacJoin(code[1], tacCreate(TAC_AWRITE, node->symbol, code[0]?code[0]->res:0, code[1]?code[1]->res:0)); break;
 		case ASTREE_VARINI: result = code[0]; break;
-		case ASTREE_VARDECL: result = tacJoin(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), tacCreate(TAC_MOVE, node->symbol, code[1]?code[1]->res:0, 0)); break;
 		case ASTREE_INTL: result = tacJoin(code[0], tacCreate(TAC_AINIPUSH, node->symbol, 0, 0)); break;
 		case ASTREE_ARRINI: result = tacJoin(code[0], tacCreate(TAC_ASIZE, node->symbol, 0, 0)); break;
-		case ASTREE_ARRDECL: result = tacJoin(code[1], tacCreate(TAC_ADECLPOP, node->symbol, code[1]?code[1]->res:0, 0)); break;
+
+
 		default: result = tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]) ; break;
 	}
 
