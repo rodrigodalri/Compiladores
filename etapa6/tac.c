@@ -242,7 +242,6 @@ void asmAddString(TAC *first)
                 numLC++;
 		break;
     default:
-		printf("=(\n");
 		break;
     }
     }

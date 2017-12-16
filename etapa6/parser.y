@@ -97,9 +97,9 @@ prog : listadeclaracoes { root = $$;
  			  tacPrintFoward(firstTAC); 
 				
 			  asmAddTemp(); 
-			  asmAddImm();  
-			  asmAddPrintData();    
-			  asmAddData($$); 
+			  asmAddImm();  // arrumar
+			  asmAddPrintData();// arrumar    
+			  asmAddData($$); // arrumar
 			  asmGen(firstTAC);
 			  
 			 

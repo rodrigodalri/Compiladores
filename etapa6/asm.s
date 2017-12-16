@@ -1,3 +1,135 @@
+	.globl	_Temporary_7
+	.data
+	.type	_Temporary_7, @object
+	.size	_Temporary_7, 4
+_Temporary_7:
+	.long 0
+	.globl	_Temporary_5
+	.data
+	.type	_Temporary_5, @object
+	.size	_Temporary_5, 4
+_Temporary_5:
+	.long 0
+	.globl	_Temporary_3
+	.data
+	.type	_Temporary_3, @object
+	.size	_Temporary_3, 4
+_Temporary_3:
+	.long 0
+	.globl	_Temporary_1
+	.data
+	.type	_Temporary_1, @object
+	.size	_Temporary_1, 4
+_Temporary_1:
+	.long 0
+	.globl	_Temporary_8
+	.data
+	.type	_Temporary_8, @object
+	.size	_Temporary_8, 4
+_Temporary_8:
+	.long 0
+	.globl	_Temporary_6
+	.data
+	.type	_Temporary_6, @object
+	.size	_Temporary_6, 4
+_Temporary_6:
+	.long 0
+	.globl	_Temporary_4
+	.data
+	.type	_Temporary_4, @object
+	.size	_Temporary_4, 4
+_Temporary_4:
+	.long 0
+	.globl	_Temporary_10
+	.data
+	.type	_Temporary_10, @object
+	.size	_Temporary_10, 4
+_Temporary_10:
+	.long 0
+	.globl	_Temporary_2
+	.data
+	.type	_Temporary_2, @object
+	.size	_Temporary_2, 4
+_Temporary_2:
+	.long 0
+	.globl	_Temporary_0
+	.data
+	.type	_Temporary_0, @object
+	.size	_Temporary_0, 4
+_Temporary_0:
+	.long 0
+	.globl	_Temporary_11
+	.data
+	.type	_Temporary_11, @object
+	.size	_Temporary_11, 4
+_Temporary_11:
+	.long 0
+	.globl	_Temporary_9
+	.data
+	.type	_Temporary_9, @object
+	.size	_Temporary_9, 4
+_Temporary_9:
+	.long 0
+	.globl	_0
+	.data
+	.type	_0, @object
+	.size	_0, 4
+_0:
+	.long	0
+	.globl	_1
+	.data
+	.type	_1, @object
+	.size	_1, 4
+_1:
+	.long	1
+	.globl	_3
+	.data
+	.type	_3, @object
+	.size	_3, 4
+_3:
+	.long	3
+	.globl	_5
+	.data
+	.type	_5, @object
+	.size	_5, 4
+_5:
+	.long	5
+	.globl	_7
+	.data
+	.type	_7, @object
+	.size	_7, 4
+_7:
+	.long	7
+	.globl	_9
+	.data
+	.type	_9, @object
+	.size	_9, 4
+_9:
+	.long	9
+	.globl	_105
+	.data
+	.type	_105, @object
+	.size	_105, 4
+_105:
+	.long	105
+	.globl	_10
+	.data
+	.type	_10, @object
+	.size	_10, 4
+_10:
+	.long	10
+	.globl	_11
+	.data
+	.type	_11, @object
+	.size	_11, 4
+_11:
+	.long	11
+	.globl	_65
+	.data
+	.type	_65, @object
+	.size	_65, 4
+_65:
+	.long	65
 	.section	.rodata
 .LC0:
 	.string	"%d"

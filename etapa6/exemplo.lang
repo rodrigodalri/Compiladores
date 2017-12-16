@@ -12,6 +12,7 @@ c: byte='x';
 d: byte=65;
 e: double=60000005.6;
 
+
 (long) main()
   {
   a = 10;
@@ -57,4 +58,3 @@ if (a==11) then {} else
 
 }
 
-  
