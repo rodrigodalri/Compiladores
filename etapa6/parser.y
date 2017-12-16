@@ -95,11 +95,13 @@ prog : listadeclaracoes { root = $$;
 			  erro = checkSemantic(root);
 			  TAC* firstTAC = tacReverse(tacGenerate($1)); 
  			  tacPrintFoward(firstTAC); 
-				
+			  
+                          //asmAddString(firstTAC);	
 			  asmAddTemp(); 
 			  asmAddImm();  // arrumar
 			  asmAddPrintData();// arrumar    
-			  asmAddData($$); // arrumar
+fprintf(stderr, "ANTES ASMADDDATA\n");			  
+				asmAddData($$); // arrumar
 			  asmGen(firstTAC);
 			  
 			 

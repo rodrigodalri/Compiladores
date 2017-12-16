@@ -82,26 +82,26 @@ void astreePrint(int level, ASTREE *node){
 	}
 }
 
-
-
-
-
-
-void asmAddData(ASTREE *node){
+void asmAddData(ASTREE *node)
+{
+	fprintf(stderr, "ENTROU ASMADDDATA\n");
 	if(!node) return;
-	if(node->type == ASTREE_VARDECL){
+	if(node->type == ASTREE_VARINI){
+		fprintf(stderr, "ENTROU VARINI\n");
        		asmAddVariable(node);
 	}
-	else if(node->type == ASTREE_ARRDECL){
+	else if(node->type == ASTREE_ARRINI){
+		fprintf(stderr, "ENTROU ARINI\n");
         	asmAddArray(node);
 	}
-    else if(node->type == ASTREE_SYMBOL){
-      asmAddPrint(node);
-        
-    }
-    else if(node->type == ASTREE_PARAM){
-        asmAddParam(node);
-    }
+    	else if(node->type == ASTREE_SYMBOL){
+		fprintf(stderr, "ENTROU SYMBOL\n");      		
+		asmAddPrint(node);
+    	}
+    	else if(node->type == ASTREE_PARAM){
+		fprintf(stderr, "ENTROU PARAM\n");
+        	asmAddParam(node);
+    	}
     
 	int i;
 	for(i = 0; i < MAX_SONS; i++){
@@ -110,30 +110,48 @@ void asmAddData(ASTREE *node){
 }
 
 
-void asmAddVariable(ASTREE* var){
+void asmAddVariable(ASTREE* var)
+{
+	fprintf(stderr, "ENTROU asmadd variable \n");
+
 	FILE *fout = fopen("asm.s", "a");
-	if(var->type == ASTREE_VARDECL){
+	
+	if(!var) return;
+	if(var->type == ASTREE_VARINI)
+	{
+
+		
 		fprintf(fout, "\t.globl	_%s\n"
 			"\t.data\n"
 			"\t.type	_%s, @object\n"
 			"\t.size	_%s, 4\n"
 			"_%s:\n", var->symbol->text, var->symbol->text, var->symbol->text, var->symbol->text);
-			
+		
+
+	/* ACHEI O SEG FAULT
+		
 		if(var->son[0]->type == ASTREE_FLOAT || var->son[0]->type == ASTREE_DOUBLE){
+			if(var->son[1]->son[0]->symbol != NULL)
 			fprintf(fout, "\t.float	%s\n", var->son[1]->son[0]->symbol->text);
 		}
 		else{
+			if(var->son[1]->son[0]->symbol != NULL)
 			fprintf(fout, "\t.long	%s\n", var->son[1]->son[0]->symbol->text);
 		}
-	}
+	
+	*/
 
+
+	}
 	fclose(fout);
 }
 
-void asmAddParam(ASTREE* var){
+void asmAddParam(ASTREE* var)
+{
 	FILE *fout = fopen("asm.s", "a");
-	if(var->type == ASTREE_PARAM){
-		
+
+	if(var->type == ASTREE_PARAM)
+	{		
 		fprintf(fout, "\t.globl	_%s\n"
 			"\t.data\n"
 			"\t.type	_%s, @object\n"
@@ -145,18 +163,22 @@ void asmAddParam(ASTREE* var){
 	fclose(fout);
 }
 
-void asmAddArray(ASTREE* arr){
+void asmAddArray(ASTREE* arr)
+{
 	FILE *fout = fopen("asm.s", "a");
-	if(arr->type == ASTREE_ARRDECL){
+
+	if(arr->type == ASTREE_ARRINI)
+	{
 		fprintf(fout, "\t.globl	_%s\n"
 			"\t.data\n"
 			"\t.type	_%s, @object\n"
 			"\t.size	_%s, %d\n"
 			"_%s:\n", arr->symbol->text, arr->symbol->text, arr->symbol->text, 4*atoi(arr->son[1]->symbol->text), arr->symbol->text);
 			ASTREE* aux;
-			for(aux = arr->son[1]->son[0]; aux; aux = aux->son[0] ){
-				fprintf(fout, "\t.long	%s\n", aux->symbol->text);
-			}
+	for(aux = arr->son[1]->son[0]; aux; aux = aux->son[0])
+	{
+		fprintf(fout, "\t.long	%s\n", aux->symbol->text);
+	}
 	}
 
 	fclose(fout);
@@ -168,19 +190,17 @@ void asmAddPrint(ASTREE* arr)
 {
 	FILE *fout = fopen("asm.s", "a");
    
-     char* lable = (char*) calloc(1, sizeof(char));
+     	char* lable = (char*) calloc(1, sizeof(char));
+	
 	if(arr->type == ASTREE_SYMBOL && arr->symbol->datatype == 103)
 	{
        
 	        if(arr->symbol)
 		{
-	            strcpy(lable, ".LC");
-	        fprintf(fout, "\t.section\t .rodata\n%s%d:\n\t.string %s \n", lable, numLC ,arr->symbol->text );
-            numLC +=1;
-            
-            
-        }
+	        strcpy(lable, ".LC");
+	        fprintf(fout, "\t.section\t .rodata\n%s%d:\n\t.string %s \n", lable, numLC ,arr->symbol->text);
+            	numLC +=1;          
+        	}
         	
 	}
-
 }
