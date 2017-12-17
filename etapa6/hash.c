@@ -112,9 +112,6 @@ Hash_Node* makeLabel(){
 	return hashInsert(SYMBOL_IDENTIFIER, buffer);
 }
 
-
-
-
 void asmAddTemp(){
 	int i;
 	FILE* fout = fopen("asm.s", "w");

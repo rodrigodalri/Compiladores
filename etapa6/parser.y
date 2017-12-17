@@ -96,12 +96,10 @@ prog : listadeclaracoes { root = $$;
 			  TAC* firstTAC = tacReverse(tacGenerate($1)); 
  			  tacPrintFoward(firstTAC); 
 			  
-                          //asmAddString(firstTAC);	
-			  asmAddTemp(); 
-			  asmAddImm();  // arrumar
-			  asmAddPrintData();// arrumar    
-fprintf(stderr, "ANTES ASMADDDATA\n");			  
-				asmAddData($$); // arrumar
+                          asmAddTemp(); 
+			  asmAddImm();  
+			  asmAddPrintData();    
+                          asmAddData($$); 
 			  asmGen(firstTAC);
 			  
 			 

@@ -68,35 +68,35 @@ void tacPrintOne(TAC *tac)
 		fprintf(stderr, "TAC(");
 		switch(tac->type){
 			case TAC_SYMBOL: fprintf(stderr, "TAC_SYMBOL"); break;
-			case TAC_ADD: fprintf(stderr, "TAC_ADD"); break;//
-			case TAC_SUB: fprintf(stderr, "TAC_SUB"); break;//
-			case TAC_MUL: fprintf(stderr, "TAC_MUL"); break;//
-			case TAC_DIV: fprintf(stderr, "TAC_DIV"); break;//
-			case TAC_L: fprintf(stderr, "TAC_L"); break;//
-			case TAC_G: fprintf(stderr, "TAC_G"); break;//
-			case TAC_LE: fprintf(stderr, "TAC_LE"); break;//
-			case TAC_GE: fprintf(stderr, "TAC_GE"); break;//
-			case TAC_EQ: fprintf(stderr, "TAC_EQ"); break;//
-			case TAC_NE: fprintf(stderr, "TAC_NE"); break;//
-			case TAC_AND: fprintf(stderr, "TAC_AND"); break;//
-			case TAC_OR: fprintf(stderr, "TAC_OR"); break;//
+			case TAC_ADD: fprintf(stderr, "TAC_ADD"); break;
+			case TAC_SUB: fprintf(stderr, "TAC_SUB"); break;
+			case TAC_MUL: fprintf(stderr, "TAC_MUL"); break;
+			case TAC_DIV: fprintf(stderr, "TAC_DIV"); break;
+			case TAC_L: fprintf(stderr, "TAC_L"); break;
+			case TAC_G: fprintf(stderr, "TAC_G"); break;
+			case TAC_LE: fprintf(stderr, "TAC_LE"); break;
+			case TAC_GE: fprintf(stderr, "TAC_GE"); break;
+			case TAC_EQ: fprintf(stderr, "TAC_EQ"); break;
+			case TAC_NE: fprintf(stderr, "TAC_NE"); break;
+			case TAC_AND: fprintf(stderr, "TAC_AND"); break;
+			case TAC_OR: fprintf(stderr, "TAC_OR"); break;
 			case TAC_NOT: fprintf(stderr, "TAC_NOT"); break;
-			case TAC_MOVE: fprintf(stderr, "TAC_MOVE"); break;//
-			case TAC_READ: fprintf(stderr, "TAC_READ"); break;//
-			case TAC_RET: fprintf(stderr, "TAC_RET"); break;//
-			case TAC_IFZ: fprintf(stderr, "TAC_IFZ"); break;//
-			case TAC_LABEL: fprintf(stderr, "TAC_LABEL"); break;//
-			case TAC_JUMP: fprintf(stderr, "TAC_JUMP"); break;//
-			case TAC_PRINT: fprintf(stderr, "TAC_PRINT"); break;//
-			case TAC_PARPOP: fprintf(stderr, "TAC_PARPOP"); break;//
-			case TAC_FUNCALL: fprintf(stderr, "TAC_FUNCALL"); break;//
-			case TAC_BEGINFUN: fprintf(stderr, "TAC_BEGINFUN"); break;//
-			case TAC_ENDFUN: fprintf(stderr, "TAC_ENDFUN"); break;//
-			case TAC_AREAD: fprintf(stderr, "TAC_AREAD"); break;//
-			case TAC_AWRITE: fprintf(stderr, "TAC_AWRITE"); break;//			
+			case TAC_MOVE: fprintf(stderr, "TAC_MOVE"); break;
+			case TAC_READ: fprintf(stderr, "TAC_READ"); break;
+			case TAC_RET: fprintf(stderr, "TAC_RET"); break;
+			case TAC_IFZ: fprintf(stderr, "TAC_IFZ"); break;
+			case TAC_LABEL: fprintf(stderr, "TAC_LABEL"); break;
+			case TAC_JUMP: fprintf(stderr, "TAC_JUMP"); break;
+			case TAC_PRINT: fprintf(stderr, "TAC_PRINT"); break;
+			case TAC_PARPOP: fprintf(stderr, "TAC_PARPOP"); break;
+			case TAC_FUNCALL: fprintf(stderr, "TAC_FUNCALL"); break;
+			case TAC_BEGINFUN: fprintf(stderr, "TAC_BEGINFUN"); break;
+			case TAC_ENDFUN: fprintf(stderr, "TAC_ENDFUN"); break;
+			case TAC_AREAD: fprintf(stderr, "TAC_AREAD"); break;
+			case TAC_AWRITE: fprintf(stderr, "TAC_AWRITE"); break;			
 			case TAC_AINIPUSH: fprintf(stderr, "TAC_AINIPUSH"); break;
 			case TAC_ASIZE: fprintf(stderr, "TAC_ASIZE"); break;
-			case TAC_PARPUSH: fprintf(stderr, "TAC_PARPUSH"); break;//
+			case TAC_PARPUSH: fprintf(stderr, "TAC_PARPUSH"); break;
 			
 			default: fprintf(stderr, "TAC_UNKNOWN"); break;
 		}
@@ -147,15 +147,6 @@ TAC* tacGenerate(ASTREE *node)
 		case ASTREE_FUNDEF: result = makeFunction(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[1], code[2]); break;
 		case ASTREE_PARAM: result = tacCreate(TAC_PARPOP, node->symbol, 0, 0); break;
 		case ASTREE_PARL: result = tacJoin(code[0], code[1]); break;
-		
-
-		//NÃO SEI SE PRECISA
-		/*case ASTREE_ARRAY_READ: result = tacCreate(TAC_AREAD, makeTemp(), node->symbol, code[0]?code[0]->res:0); break;
-		case ASTREE_ARRAY_WRITE: result = tacJoin(code[1], tacCreate(TAC_AWRITE, node->symbol, code[0]?code[0]->res:0, code[1]?code[1]->res:0)); break;
-		case ASTREE_VARINI: result = code[0]; break;
-		case ASTREE_INTL: result = tacJoin(code[0], tacCreate(TAC_AINIPUSH, node->symbol, 0, 0)); break;
-		case ASTREE_ARRINI: result = tacJoin(code[0], tacCreate(TAC_ASIZE, node->symbol, 0, 0)); break;
-		*/
 
 		default: result = tacJoin(tacJoin(tacJoin(code[0], code[1]), code[2]), code[3]) ; break;
 	}
@@ -208,9 +199,6 @@ TAC* makeIfThenElse(TAC* code0, TAC* code1, TAC* code2)
 	else 
 		return tacJoin(tacJoin(tacJoin(code0, ifTAC), code1),ifLabelTAC);
 }
-
-
-
 
 void asmAddPrintData()
 {
@@ -469,8 +457,6 @@ void asmGen(TAC *first)
                              
                             break;
                           }
-
-
 		}
 
 	}

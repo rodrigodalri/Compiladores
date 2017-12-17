@@ -52,7 +52,6 @@ void hashCheckUndeclared();
 Hash_Node* makeTemp();
 Hash_Node* makeLabel();
 
-
 void asmAddTemp();
 void asmAddImm();
 

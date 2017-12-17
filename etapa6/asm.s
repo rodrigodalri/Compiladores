@@ -81,11 +81,13 @@ _11:
 	.type	_a, @object
 	.size	_a, 4
 _a:
+	.long	0
 	.globl	_i
 	.data
 	.type	_i, @object
 	.size	_i, 4
 _i:
+	.long	0
 	.globl	_v
 	.data
 	.type	_v, @object
@@ -101,6 +103,7 @@ _mat:
 	.type	_f, @object
 	.size	_f, 4
 _f:
+	.float	10.55
 	.globl	_x
 	.data
 	.type	_x, @object
@@ -227,3 +230,15 @@ voidfunc:
 	movq	%rsp, %rbp
 	popq	%rbp
 	ret
+	.section	 .rodata
+.LC5:
+	.string "Parou no meio\n" 
+	.section	 .rodata
+.LC4:
+	.string "\n" 
+	.section	 .rodata
+.LC3:
+	.string "Incrementado algumas vezes fica " 
+	.section	 .rodata
+.LC2:
+	.string "Digite um numero: \n" 
