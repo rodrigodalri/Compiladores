@@ -4,6 +4,12 @@
 */
 
 a: short=0;
+b: short=0;
+c: short=0;
+d: short=0;
+e: short=0;
+g: short=0;
+h: short=0;
 i: long=0;
 v: long[10] 0 0 0 0 0 0 0 0 0 0; 
 mat: long[10]; 
@@ -14,8 +20,8 @@ f: float=10.55;
 (long) main()
   {
   a = 10;
-  //v[2] = v[10-1]; 
- 
+  b = 2;
+  c = 3;
   print "Digite um numero: \n";
   read > i;
   while (i<10)
@@ -25,10 +31,29 @@ f: float=10.55;
    
     };
   print "Incrementado algumas vezes fica ",a,"\n";
-  if (a==5) then 
-    print "Parou no meio\n";
-  if (a==11) then
-    ;
+  if (5==5) then 
+    print "igualdade funcionou\n";
+  if (4<5) then 
+    print "menor funcionou\n";
+  if (5>4) then 
+    print "maior funcionou\n";
+  if (5<=5) then 
+    print "menor igual funcionou\n";
+  if (6>=5) then 
+    print "maior igual funcionou\n";
+  if (7!=5) then 
+    print "diferente funcionou\n";
+
+d = a + b;
+print "2 + 3 = ",d,"\n";
+e = a - b;
+print "2 - 3 = ",e,"\n";
+g = a * b;
+print "2 * 3 = ",g,"\n";
+h = a / b;
+print "2 / 3 = ",h,"\n";
+
+ 
 if (a==11) then {} else
      ;
   ;;;
