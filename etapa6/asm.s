@@ -369,7 +369,7 @@ main:
 	movl	$.LC1, %edi
 	call	printf
 .Label_7:
-	movl	_a(%rip), %edx
+	movl	_c(%rip), %edx
 	movl	_b(%rip), %eax
 	addl	%eax, %edx
 	movl	%edx, _Temporary_9(%rip)
@@ -385,8 +385,8 @@ main:
 	movl	$.LC12, %esi
 	movl	$.LC1, %edi
 	call	printf
-	movl	_a(%rip), %edx
-	movl	_b(%rip), %eax
+	movl	_b(%rip), %edx
+	movl	_c(%rip), %eax
 	subl	%eax, %edx
 	movl	%edx, _Temporary_10(%rip)
 	movl	_Temporary_10(%rip), %eax
@@ -401,7 +401,7 @@ main:
 	movl	$.LC14, %esi
 	movl	$.LC1, %edi
 	call	printf
-	movl	_a(%rip), %edx
+	movl	_c(%rip), %edx
 	movl	_b(%rip), %eax
 	imull %eax, %edx
 	movl	%edx, _Temporary_11(%rip)
@@ -417,7 +417,7 @@ main:
 	movl	$.LC16, %esi
 	movl	$.LC1, %edi
 	call	printf
-	movl	_a(%rip), %eax
+	movl	_c(%rip), %eax
 	movl	_b(%rip), %ecx
 	cltd
 	idivl	%ecx

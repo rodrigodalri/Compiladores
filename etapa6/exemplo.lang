@@ -44,13 +44,13 @@ f: float=10.55;
   if (7!=5) then 
     print "diferente funcionou\n";
 
-d = a + b;
+d = c + b;
 print "2 + 3 = ",d,"\n";
-e = a - b;
+e = b - c ;
 print "2 - 3 = ",e,"\n";
-g = a * b;
+g = c* b;
 print "2 * 3 = ",g,"\n";
-h = a / b;
+h = c / b;
 print "2 / 3 = ",h,"\n";
 
  

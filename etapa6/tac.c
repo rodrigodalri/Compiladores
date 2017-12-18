@@ -204,11 +204,11 @@ void asmAddPrintData()
 {
 	FILE *fout = fopen("asm.s", "a");
 	fprintf(fout, "\t.section	.rodata\n"
-			".LC0:\n"
-			"\t.string	\"%%d\"\n");
+		      ".LC0:\n"
+		      "\t.string	\"%%d\"\n");
 	fprintf(fout, "\t.section	.rodata\n"
-			".LC1:\n"
-			"\t.string	\"%%s\"\n");
+		      ".LC1:\n"
+		      "\t.string	\"%%s\"\n");
 	fclose(fout);
 }
 
@@ -253,214 +253,188 @@ void asmGen(TAC *first)
 
 	switch(tac->type){
 		case TAC_ADD: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\taddl	%%eax, %%edx\n"
-									"\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break; 
-
-       
+					    "\tmovl	_%s(%%rip), %%eax\n"
+				            "\taddl	%%eax, %%edx\n"
+					    "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break; 
 
 		case TAC_SUB: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tsubl	%%eax, %%edx\n"
-									"\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;	
+					    "\tmovl	_%s(%%rip), %%eax\n"
+					    "\tsubl	%%eax, %%edx\n"
+					    "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;	
 
 		case TAC_DIV: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\tmovl	_%s(%%rip), %%ecx\n"
-									"\tcltd\n"
-									"\tidivl	%%ecx\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;
-
-                       if(aux == 0){
-                        fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\tmovl	_%s(%%rip), %%ecx\n"
-									"\tcltd\n"
-									"\tidivl	%%ecx\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;
-                      }else{
-                        fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									  "\tmovl	_%s(%%rip), %%eax\n"       
-                                      "\tshr $%d, %%edx\n"                                    
-									  "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text, aux, tac->res->text); break;
-                      }
+					    "\tmovl	_%s(%%rip), %%ecx\n"
+					    "\tcltd\n"
+					    "\tidivl	%%ecx\n"
+					    "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;
+                              if(aux == 0){
+                              	fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
+				              "\tmovl	_%s(%%rip), %%ecx\n"
+					      "\tcltd\n"
+					      "\tidivl	%%ecx\n"
+			                      "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;
+                              }else{
+                              	fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
+					      "\tmovl	_%s(%%rip), %%eax\n"       
+                                              "\tshr $%d, %%edx\n"                                    
+					      "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text, aux, tac->res->text); break;
+                             }
 
 		case TAC_MUL: 
-                      if(aux == 0){
-                        fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									  "\tmovl	_%s(%%rip), %%eax\n"       
-                                      "\timull %%eax, %%edx\n"
-									  "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;
-                      }else{
-                        fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									  "\tmovl	_%s(%%rip), %%eax\n"       
-                                      "\tshl $%d, %%edx\n"
-                                      
-									  "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text, aux, tac->res->text); break;
-                      }
+                        if(aux == 0){
+                        	fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
+					      "\tmovl	_%s(%%rip), %%eax\n"       
+                                              "\timull %%eax, %%edx\n"
+					      "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;
+                        }else{
+                        	fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
+					      "\tmovl	_%s(%%rip), %%eax\n"       
+                                              "\tshl $%d, %%edx\n"
+                                              "\tmovl	%%edx, _%s(%%rip)\n", tac->op1->text,tac->op2->text, aux, tac->res->text); break;
+                        }
 	
 		case TAC_EQ: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tcmpl	%%eax, %%edx\n"
-									"\tsete	%%al\n"
-									"\tmovzbl	%%al, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;	
+					   "\tmovl	_%s(%%rip), %%eax\n"
+					   "\tcmpl	%%eax, %%edx\n"
+					   "\tsete	%%al\n"
+					   "\tmovzbl	%%al, %%eax\n"
+					   "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;	
 
 		case TAC_NE: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tcmpl	%%eax, %%edx\n"
-									"\tsetne	%%al\n"
-									"\tmovzbl	%%al, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;	
+					   "\tmovl	_%s(%%rip), %%eax\n"
+					   "\tcmpl	%%eax, %%edx\n"
+					   "\tsetne	%%al\n"
+					   "\tmovzbl	%%al, %%eax\n"
+					   "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text,tac->op2->text,tac->res->text); break;	
+
+		case TAC_NOT:/* fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
+					    "\ttestl    \t%%edx, %%edx\n"
+					    "\tcmpl      \t%s\n"	
+					    "\tmovl     \t$1, %s(%%rip)\n"	
+					    "\tjmp      \t%s\n"
+					    "\tmovl     \t$0, %s(%%rip)\n", tac->op1->text); break;*/
 
 		case TAC_OR: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\ttestl	%%eax, %%eax\n"
-									"\tjne	.L%d\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\ttestl	%%eax, %%eax\n"
-									"\tje	.L%d\n"
-									".L%d:\n"
-									"\tmovl	$1, %%eax\n" //modifique para poder compilar %_1
-									"\tjmp	.L%d\n"
-									".L%d:\n"
-									"\tmovl	$0, %%eax\n" //modifique para poder compilar %_0
-									".L%d:\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, labelNmbr, tac->op2->text, labelNmbr+1, labelNmbr, labelNmbr+2, labelNmbr+1, labelNmbr+2, tac->res->text);
-									labelNmbr += 3;
-									break;		
+					   "\ttestl	%%eax, %%eax\n"
+					   "\tjne	.L%d\n"
+					   "\tmovl	_%s(%%rip), %%eax\n"
+					   "\ttestl	%%eax, %%eax\n"
+					   "\tje	.L%d\n"
+					   ".L%d:\n"
+					   "\tmovl	$1, %%eax\n" 
+					   "\tjmp	.L%d\n"
+					   ".L%d:\n"
+					   "\tmovl	$0, %%eax\n" 
+					   ".L%d:\n"
+					   "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, labelNmbr, tac->op2->text, labelNmbr+1, labelNmbr, labelNmbr+2, labelNmbr+1, labelNmbr+2, tac->res->text); labelNmbr += 3; break;		
 
 		case TAC_AND: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\ttestl	%%eax, %%eax\n"
-									"\tje	.L%d\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\ttestl	%%eax, %%eax\n"
-									"\tje	.L%d\n"
-									"\tmovl	$1, %%eax\n"  //modifique para poder compilar %_1
-									"\tjmp	.L%d\n"
-									".L%d:\n"
-									"\tmovl	$0, %%eax\n" //modifique para poder compilar %_0
-									".L%d:\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, labelNmbr, tac->op2->text, labelNmbr, labelNmbr+1, labelNmbr, labelNmbr+1, tac->res->text);
-									labelNmbr += 2;
-									break;
-		case TAC_NOT: 
-
-				break;
+					    "\ttestl	%%eax, %%eax\n"
+					    "\tje	.L%d\n"
+					    "\tmovl	_%s(%%rip), %%eax\n"
+					    "\ttestl	%%eax, %%eax\n"
+					    "\tje	.L%d\n"
+					    "\tmovl	$1, %%eax\n"  
+					    "\tjmp	.L%d\n"
+					    ".L%d:\n"
+					    "\tmovl	$0, %%eax\n" 
+					    ".L%d:\n"
+					    "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, labelNmbr, tac->op2->text, labelNmbr, labelNmbr+1, labelNmbr, labelNmbr+1, tac->res->text); labelNmbr += 2; break;
+		
 		case TAC_G: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tcmpl	%%eax, %%edx\n"
-									"\tsetg	%%al\n"
-									"\tmovzbl	%%al, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
-									break;
+					  "\tmovl	_%s(%%rip), %%eax\n"
+					  "\tcmpl	%%eax, %%edx\n"
+					  "\tsetg	%%al\n"
+					  "\tmovzbl	%%al, %%eax\n"
+					  "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text); break;
 
 		case TAC_L: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tcmpl	%%eax, %%edx\n"
-									"\tsetl	%%al\n"
-									"\tmovzbl	%%al, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
-									break;
+					  "\tmovl	_%s(%%rip), %%eax\n"
+					  "\tcmpl	%%eax, %%edx\n"
+					  "\tsetl	%%al\n"
+					  "\tmovzbl	%%al, %%eax\n"
+					  "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text); break;
 
 		case TAC_GE: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tcmpl	%%eax, %%edx\n"
-									"\tsetge	%%al\n"
-									"\tmovzbl	%%al, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
-									break;
+					   "\tmovl	_%s(%%rip), %%eax\n"
+					   "\tcmpl	%%eax, %%edx\n"
+					   "\tsetge	%%al\n"
+					   "\tmovzbl	%%al, %%eax\n"
+					   "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text); break;
 
 		case TAC_LE: fprintf(fout, "\tmovl	_%s(%%rip), %%edx\n"
-									"\tmovl	_%s(%%rip), %%eax\n"
-									"\tcmpl	%%eax, %%edx\n"
-									"\tsetle	%%al\n"
-									"\tmovzbl	%%al, %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text);
-									break;
+					   "\tmovl	_%s(%%rip), %%eax\n"
+					   "\tcmpl	%%eax, %%edx\n"
+					   "\tsetle	%%al\n"
+					   "\tmovzbl	%%al, %%eax\n"
+					   "\tmovl	%%eax, _%s(%%rip)\n", tac->op1->text, tac->op2->text, tac->res->text); break;
 
 		case TAC_BEGINFUN: fprintf(fout, "\t.text\n"
-									"\t.globl %s\n"
-									"\t.type	%s, @function\n" 
-									"%s:\n"
-									"\tpushq	%%rbp\n"
-									"\tmovq	%%rsp, %%rbp\n",  tac->res->text, tac->res->text, tac->res->text);
-									break;
+						 "\t.globl %s\n"
+						 "\t.type	%s, @function\n" 
+						 "%s:\n"
+						 "\tpushq	%%rbp\n"
+						 "\tmovq	%%rsp, %%rbp\n",  tac->res->text, tac->res->text, tac->res->text); break;
 	
 		case TAC_ENDFUN: fprintf(fout, "\tpopq	%%rbp\n"
-									"\tret\n");
-									parNmbr2 = 0;
-									break;
+					       "\tret\n"); parNmbr2 = 0; break;
 
 		case TAC_FUNCALL: fprintf(fout, "\tcall	%s\n"
-										"\tmovl	%%eax, _%s(%%rip)\n" , tac->op1->text, tac->res->text);
-										parNmbr1 = 0;
-									break;
+						"\tmovl	%%eax, _%s(%%rip)\n" , tac->op1->text, tac->res->text); parNmbr1 = 0; break;
 
-		case TAC_RET: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n" , tac->op1->text);
-									break;
+		case TAC_RET: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n" , tac->op1->text); break;
 
-		case TAC_LABEL: fprintf(fout, ".%s:\n" , tac->res->text);
-									break;
+		case TAC_LABEL: fprintf(fout, ".%s:\n" , tac->res->text); break;
 
-		case TAC_JUMP: fprintf(fout, "\tjmp	.%s\n" , tac->res->text);
-									break;
+		case TAC_JUMP: fprintf(fout, "\tjmp	.%s\n" , tac->res->text); break;
 
 		case TAC_MOVE: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n" , tac->op1->text, tac->res->text);
-									break;
+					     "\tmovl	%%eax, _%s(%%rip)\n" , tac->op1->text, tac->res->text); break;
 
 		case TAC_IFZ: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\ttestl	%%eax, %%eax\n"
-									"\tjne	.L%d\n"
-									"\tjmp	.%s\n"
-									".L%d:", tac->op1->text, labelNmbr, tac->res->text, labelNmbr);
-									labelNmbr++;
-									break;
+					    "\ttestl	%%eax, %%eax\n"
+					    "\tjne	.L%d\n"
+					    "\tjmp	.%s\n"
+					    ".L%d:", tac->op1->text, labelNmbr, tac->res->text, labelNmbr); labelNmbr++; break;
 
 		case TAC_PARPOP: fprintf(fout, "\tmovl	%%%s, %%eax\n"
-									   "\tmovl	%%eax, _%s(%%rip)\n" , parReg[parNmbr2++], tac->res->text);
-									break;
+					       "\tmovl	%%eax, _%s(%%rip)\n" , parReg[parNmbr2++], tac->res->text); break;
 
 		case TAC_PARPUSH: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-										"\tmovl	%%eax, %%%s\n", tac->res->text, parReg[parNmbr1++]);
-									break;
+						"\tmovl	%%eax, %%%s\n", tac->res->text, parReg[parNmbr1++]); break;
 
 
 		case TAC_AREAD: fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n"
-									"\tcltq\n"
-									"\tmovl	_%s(,%%rax,4), %%eax\n"
-									"\tmovl	%%eax, _%s(%%rip)\n" , tac->op2->text, tac->op1->text, tac->res->text);
-									break;
+					      "\tcltq\n"
+					      "\tmovl	_%s(,%%rax,4), %%eax\n"
+					      "\tmovl	%%eax, _%s(%%rip)\n" , tac->op2->text, tac->op1->text, tac->res->text); break;
 
 		case TAC_AWRITE: fprintf(fout, "\tmovl	_%s, %%eax\n"
-									"\tmovl	_%s(%%rip), %%edx\n"
-									"\tcltq\n"
-									"\tmovl	%%edx, _%s(,%%rax,4)\n", tac->op1->text, tac->op2->text, tac->res->text);
-									break;
+					       "\tmovl	_%s(%%rip), %%edx\n"
+					       "\tcltq\n"
+					       "\tmovl	%%edx, _%s(,%%rax,4)\n", tac->op1->text, tac->op2->text, tac->res->text); break;
 
         	case TAC_READ: fprintf(fout, "\tmovl	$_%s, %%esi\n"
-									"\tmovl	$.LC0, %%edi\n"
-									"\tcall	__isoc99_scanf\n", tac->res->text);
-									break;
+					     "\tmovl	$.LC0, %%edi\n"
+					     "\tcall	__isoc99_scanf\n", tac->res->text); break;
 
 		case TAC_PRINT: 
-						if(tac->res->text[0] == '\"'){ 
-                            printf("STRING\n");
-                            fprintf(fout, "\tmovl	$.LC%d, %%esi\n"
-									"\tmovl	$.LC1, %%edi\n"
-									"\tcall	printf\n", lableLC);
-                            lableLC++; break;
+			if(tac->res->text[0] == '\"'){ 
+                        	printf("STRING\n");
+                                fprintf(fout, "\tmovl	$.LC%d, %%esi\n"
+					      "\tmovl	$.LC1, %%edi\n"
+					      "\tcall	printf\n", lableLC); lableLC++; break;
                         }else{			
-                            printf("VARIAVEL\n");				
-							fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n" 
-									"\tmovl	%%eax, %%esi\n"
-									"\tmovl	$.LC0, %%edi\n"
-									"\tcall	printf\n", tac->res->text);
-                             
-                            break;
-                          }
+                        	printf("VARIAVEL\n");				
+				fprintf(fout, "\tmovl	_%s(%%rip), %%eax\n" 
+				              "\tmovl	%%eax, %%esi\n"
+					      "\tmovl	$.LC0, %%edi\n"
+					      "\tcall	printf\n", tac->res->text); break;
+                        }
 		}
 
 	}
+
 	fclose(fout);
-	
 }
 
